@@ -5,13 +5,19 @@ header {
 	justify-content: center;
 
 	/* background-color: var(--primary-dark-clr); */
-	backdrop-filter: blur(8px);
 	/* padding: 2px; */
 	top: 0;
 	width: 100%;
-	height: auto;
 	height: 2.5rem;
 	z-index: 999;
+}
+
+.blured {
+	backdrop-filter: blur(8px);
+}
+
+.dark {
+	background-color: var(--primary-dark-clr);
 }
 
 header .container {
