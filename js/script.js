@@ -1,8 +1,11 @@
+
+
 $(document).ready(function () {
 
 	const HEADER = $('header');
 	const NAV_LINKS = $('.nav-links');
 	const HAMBURGER_BTN = $('.hamburger-button');
+	const PROJECTS_CONTAINER = $('.projects-container');
 
 	const MIN_LAPTOP_SCREEN = 769;
 
@@ -37,5 +40,39 @@ $(document).ready(function () {
 			HEADER.addClass('dark');
 		}
 	});
+
+	fetch(`https://api.github.com/users/dihcoder/repos`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Erro ao buscar usuários.');
+			}
+			return response.json();
+		})
+		.then(data => {
+			if (data.length === 0) {
+				PROJECTS_CONTAINER.html("<p>Nenhum projeto encontrado.</p>");
+				return;
+			}
+
+			let projectHTML = '';
+			data.forEach(repo => {
+				console.log(repo.name);
+				PROJECTS_CONTAINER.html(repo.name)
+				projectHTML += `
+                    <div class="project-card">
+                        <img src="${repo.owner.avatar_url}" alt="Avatar">
+						<div>
+							<h4>${repo.name}</h4>
+							<p><a href="https://api.github.com/users/${repo.full_name}" target="_blank">Ver projeto no GitHub</a></p>
+						</div>
+                    </div>
+                `;
+			});
+
+			PROJECTS_CONTAINER.html(projectHTML);
+		})
+		.catch(error => {
+			PROJECTS_CONTAINER.html(`<p>Erro: ${error.message}</p>`);
+		});
 
 })
